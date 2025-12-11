@@ -12,11 +12,7 @@ export class Usuarioservice{
     ){}
 
     async findAll(): Promise<Usuario[]>{
-        return await this.usuarioRepository.find({
-            relations: {
-                produto: true
-            }
-        })
+        return await this.usuarioRepository.find()
     }
 
     async findById(id: number): Promise<Usuario>{
@@ -24,9 +20,7 @@ export class Usuarioservice{
             where: {
                 id
             },
-            relations: {
-                produto: true
-            }
+        
         })
 
         if(!busca){
@@ -35,29 +29,23 @@ export class Usuarioservice{
          return busca
     }
 
-    async findByEmail(email: string): Promise<Usuario>{
-        let busca = await this.usuarioRepository.findOne({
-            where: {
-                email
-            },
-            relations: {
-                produto: true
-            }
-        })
-        if(!busca){
-            throw new HttpException('Usuario não encontrado', HttpStatus.NOT_FOUND)
-    }
-        return busca
+   async findByEmail(email: string): Promise<Usuario | null> {
+    return await this.usuarioRepository.findOne({
+        where: { email }
+    });
+}
+
+
+  async create(usuario: Usuario): Promise<Usuario>{
+    let usuarioBusca = await this.findByEmail(usuario.email);
+
+    if(!usuarioBusca){
+        return await this.usuarioRepository.save(usuario);
     }
 
-    async create(usuario: Usuario): Promise<Usuario>{
-        let usuarioBusca = await this.findByEmail(usuario.email)
+    throw new HttpException("O Usuário já existe!", HttpStatus.BAD_REQUEST);
+}
 
-        if(!usuarioBusca){
-            return await this.usuarioRepository.save(usuario)
-        }
-        throw new HttpException("O Usuário ja existe!", HttpStatus.BAD_REQUEST);
-    }
 
     async update(usuario: Usuario): Promise<Usuario>{
         let usuarioUpdate: Usuario = await this.findById(usuario.id)
