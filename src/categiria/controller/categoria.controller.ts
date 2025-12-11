@@ -1,4 +1,3 @@
-// src/categoria/controllers/categoria.controller.ts
 import {
   Body,
   Controller,
