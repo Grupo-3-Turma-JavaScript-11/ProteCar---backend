@@ -8,7 +8,7 @@ export class UsuarioController {
 
     constructor(private readonly usuarioService: Usuarioservice) { }
 
-    @Get('/all')
+    @Get()
     @HttpCode(HttpStatus.OK)
     findAll(): Promise<Usuario[]> {
         return this.usuarioService.findAll();
@@ -26,19 +26,19 @@ export class UsuarioController {
         return this.usuarioService.findByEmail(email)
     }
 
-    @Post('/cadastrar')
+    @Post()
     @HttpCode(HttpStatus.CREATED)
     create(@Body() usuario: Usuario): Promise<Usuario> {
         return this.usuarioService.create(usuario)
     }
 
-    @Put('/atualizar')
+    @Put('/:id')
     @HttpCode(HttpStatus.OK)
     update(@Body() usuario: Usuario): Promise<Usuario> {
         return this.usuarioService.update(usuario)
     }
 
-    @Delete('/deletar/:id')
+    @Delete('/:id')
     @HttpCode(HttpStatus.NO_CONTENT)
     delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult>{
         return this.usuarioService.delete(id)

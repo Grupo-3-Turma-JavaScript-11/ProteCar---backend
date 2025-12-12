@@ -12,7 +12,13 @@ export class ProdutoService {
     ) { }
 
     async findAll(): Promise<Produto[]> {
-        return await this.produtoRepository.find();
+        return await this.produtoRepository.find({
+            relations: {
+                categoria: true,
+                usuario: true
+
+            }
+        });
     }
 
     async findById(id: number): Promise<Produto> {
@@ -21,6 +27,7 @@ export class ProdutoService {
                 id
             },
             relations: {
+                categoria: true,
                 usuario: true
             }
         })
@@ -37,6 +44,7 @@ export class ProdutoService {
                 numeroApolice : ILike(`%${numeroApolice}%`)
             },
             relations: {
+                categoria: true,
                 usuario: true
             }
         })
@@ -44,6 +52,16 @@ export class ProdutoService {
 
 
     async create(produto: Produto): Promise<Produto> {
+        // Ano atual
+        const anoAtual = new Date().getFullYear();
+
+        // Verifica se o carro tem mais de 10 anos
+        const idadeCarro = anoAtual - produto.anoCarro;
+
+        if (idadeCarro > 10) {
+            // Aplica 20% de desconto
+            produto.valor = produto.valor * 0.8; // 20% OFF
+        }
         return await this.produtoRepository.save(produto);
     }
 

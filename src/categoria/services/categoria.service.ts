@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
 import { Categoria } from '../entities/categoria.entity';
@@ -19,12 +19,20 @@ export class CategoriaService {
   async listarTodos(): Promise<Categoria[]> {
     return await this.categoriaRepository.find({
       order: { id: 'ASC' },
+      relations:{
+        produto: true
+      }
     });
   }
 
   async buscarPorId(id: number): Promise<Categoria> {
     const categoria = await this.categoriaRepository.findOne({
-      where: { id },
+      where: { 
+        id 
+      },
+      relations: {
+        produto: true
+      }
     });
 
     if (!categoria) {
@@ -34,17 +42,25 @@ export class CategoriaService {
     return categoria;
   }
 
-  async buscarPorDescricao(descricao: string): Promise<Categoria[]> {
-    return await this.categoriaRepository.find({
+  async buscarPorDescricao(descricao: string): Promise<Categoria | null> {
+    return await this.categoriaRepository.findOne({
       where: {
         descricao: ILike(`%${descricao}%`),
       },
+      relations: {
+        produto: true
+      }
     });
   }
 
-  async atualizar(id: number, descricao: string): Promise<Categoria> {
-    const categoria = await this.buscarPorId(id);
-    categoria.descricao = descricao;
+  async atualizar(categoria: Categoria): Promise<Categoria> {
+    let categoriaUpdate: Categoria = await this.buscarPorId(categoria.id)
+    let categoriaBusca = await this.buscarPorDescricao(categoria.descricao)
+  
+    if (!categoriaUpdate) {
+      throw new HttpException('Categoria não encontrada!', HttpStatus.NOT_FOUND);
+    }
+  
     return await this.categoriaRepository.save(categoria);
   }
 

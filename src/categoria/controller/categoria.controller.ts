@@ -11,8 +11,9 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { CategoriaService } from '../services/categoria.service';
+import { Categoria } from '../entities/categoria.entity';
 
-@Controller('categorias')
+@Controller('/categorias')
 export class CategoriaController {
   constructor(private readonly categoriaService: CategoriaService) {}
 
@@ -28,28 +29,25 @@ export class CategoriaController {
     return this.categoriaService.listarTodos();
   }
 
-  @Get(':id')
+  @Get('/:id')
   @HttpCode(HttpStatus.OK)
   buscarPorId(@Param('id', ParseIntPipe) id: number) {
     return this.categoriaService.buscarPorId(id);
   }
 
-  @Get('buscar/:descricao')
+  @Get('/descricao/:descricao')
   @HttpCode(HttpStatus.OK)
   buscarPorDescricao(@Param('descricao') descricao: string) {
     return this.categoriaService.buscarPorDescricao(descricao);
   }
 
-  @Put(':id')
+  @Put('/:id')
   @HttpCode(HttpStatus.OK)
-  atualizar(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() body: { descricao: string },
-  ) {
-    return this.categoriaService.atualizar(id, body.descricao);
+  atualizar(@Body() categoria: Categoria): Promise<Categoria> {
+    return this.categoriaService.atualizar(categoria)
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   excluir(@Param('id', ParseIntPipe) id: number) {
     return this.categoriaService.excluir(id);

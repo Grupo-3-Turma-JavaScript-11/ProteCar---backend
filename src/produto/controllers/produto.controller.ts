@@ -25,19 +25,19 @@ export class ProdutoController{
             return this.produtoService.findByNumeroApolice(numeroApolice)
         }
     
-        @Post('/cadastrar')
+        @Post()
         @HttpCode(HttpStatus.CREATED)
         create(@Body() usuario: Produto): Promise<Produto> {
             return this.produtoService.create(usuario)
         }
     
-        @Put('/atualizar')
+        @Put('/:id')
         @HttpCode(HttpStatus.OK)
         update(@Body() usuario: Produto): Promise<Produto> {
             return this.produtoService.update(usuario)
         }
     
-        @Delete('/deletar/:id')
+        @Delete('/:id')
         @HttpCode(HttpStatus.NO_CONTENT)
         delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult>{
             return this.produtoService.delete(id)

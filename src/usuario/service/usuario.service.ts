@@ -37,7 +37,12 @@ export class Usuarioservice {
 
     async findByEmail(email: string): Promise<Usuario | null> {
         return await this.usuarioRepository.findOne({
-            where: { email }
+            where: { 
+                email 
+            }, 
+            relations: {
+                produto: true
+            }
         });
     }
 

@@ -25,7 +25,7 @@ export class Usuario{
     @Column({ length: 5000 })
     foto: string
 
-    @ManyToOne(() => Produto, (produto) => produto.usuario)
-    produto: Produto[]
+    @OneToMany(() => Produto, (produto) => produto.usuario)
+    produto: Produto[];
 
 }
