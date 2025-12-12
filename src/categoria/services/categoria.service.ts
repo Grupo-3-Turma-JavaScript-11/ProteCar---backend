@@ -48,7 +48,7 @@ export class CategoriaService {
     return await this.categoriaRepository.save(categoria);
   }
 
-  async excluir(id: number): Promise<void> {
+  async Delete(id: number): Promise<void> {
     const categoria = await this.buscarPorId(id);
     await this.categoriaRepository.remove(categoria);
   }

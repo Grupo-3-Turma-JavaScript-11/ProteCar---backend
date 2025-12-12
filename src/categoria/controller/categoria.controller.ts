@@ -51,7 +51,7 @@ export class CategoriaController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  excluir(@Param('id', ParseIntPipe) id: number) {
-    return this.categoriaService.excluir(id);
+  Delete(@Param('id', ParseIntPipe) id: number) {
+    return this.categoriaService.Delete(id);
   }
 }

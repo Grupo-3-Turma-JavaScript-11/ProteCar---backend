@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CategoriaModule } from './categiria/categoria.module';
+import { CategoriaModule } from './categoria/categoria.module';
 
 @Module({
   imports: [
@@ -10,7 +10,7 @@ import { CategoriaModule } from './categiria/categoria.module';
       port: 3306,
       username: 'generetion',
       password: '123',
-      database: 'db_blogpessoal',
+      database: 'db_procar',
       autoLoadEntities: true,
       synchronize: true,
       logging: true,
