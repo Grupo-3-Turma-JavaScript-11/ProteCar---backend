@@ -5,7 +5,6 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { CategoriaModule } from './categoria/categoria.module';
 import { ConfigModule } from '@nestjs/config';
 import { ProdService } from './data/services/prod.service';
-import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -18,7 +17,7 @@ TypeOrmModule.forRootAsync({
     UsuarioModule,
     CategoriaModule
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}
